@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.15'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'hu.bagoyMuvek'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '11'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'com.pi4j:pi4j-core:2.3.0'
+    implementation 'com.pi4j:pi4j-plugin-raspberrypi:2.3.0'
+    implementation 'com.pi4j:pi4j-plugin-pigpio:2.3.0'
+    implementation 'org.rxtx:rxtx:2.1.7'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'hu.bagoyMuvek.Satellite.SatelliteApplication'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+
