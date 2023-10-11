@@ -1,0 +1,61 @@
+on linux
+get an SD card
+create rPi image by rpi-imager (sudo apt install rpi-imager) to it
+	select proper image (Lite for no GUI, 64 bit if rPi 3-4, 32 bit for rPi 1-2 models)
+	enable ssh (user: pi, passwd: pi4)
+	configure wireless network if needed
+
+on rPi 
+	put in SD card
+	power via USB-C, connector on side
+	gets IP automatically (for example it gets 192.168.0.38)
+	"ssh pi@192.168.0.38"
+	"sudo apt update"
+	"sudo apt upgrade"
+	"sudo reboot" (because we had so many firmware updated, just to be on the safe side)
+	"sudo apt install pigpio" to handle IOs
+	"sudo apt install default-jdk" (because we love Java)
+	"sudo apt install librxtx-java" to handle USB by Java, native libraries
+	check if "java -version" works
+	"curl -sSL https://pi4j.com/install | sudo bash"
+	system is ready for usage
+
+Connections to UBLOX:
+	GND  - RPi GPIO 6 - Ublox J2-8
+	UART - RPi GPIO 8 - Ublox J4-1
+	UART - RPi GPIO 10 - Ublox J4-2
+
+for SCP/SFTP
+	Ubuntu / Files / Other locations / add connection / sftp://192.168.0.38
+
+java
+	sudo apt-get --yes install git-core gcc make
+	cd ~
+	git clone https://github.com/WiringPi/WiringPi --branch master --single-branch wiringpi
+	cd ~/wiringpi
+	sudo ./build
+
+	example to test if everyting works:
+	connect	LED + 220 Ohm to pin 6 (GND), pin 12 (GPIO 01)
+	copy blink.java to a folder
+	"pi4j -c blink.java" compile
+	"pi4j Blink" run, it should blink
+
+	
+satellite project
+	gradle build
+	copy fat jar to rPi
+		scp Satellite-0.0.1-SNAPSHOT.jar pi@192.168.0.38:.
+	even better, no password required
+		sshpass -p "pi4" scp Satellite-0.0.1-SNAPSHOT.jar pi@192.168.0.38:.
+	rpi console
+		ssh pi@192.168.0.38
+	run on rPi
+		sudo java -jar Satellite-0.0.1-SNAPSHOT.jar	
+	endpoints:
+		http://192.168.0.38:8080/serial/dump
+		http://192.168.0.38:8080/led/1/on
+" 
+	
+
+	
