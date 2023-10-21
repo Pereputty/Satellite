@@ -32,4 +32,12 @@ public class UBXMessage {
                 ", checksumB=" + checksumB +
                 '}';
     }
+
+    public String toShortString() {
+        return "UBXMessage{" +
+                "class=Ox" + String.format("%02X", messageClass) +
+                ", id=Ox" + String.format("%02X", messageId) +
+                ", length=" + length +
+                '}';
+    }
 }

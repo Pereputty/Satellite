@@ -78,4 +78,11 @@ public class UBX_NAV_SAT extends UBXMessage {
                 ", satInfos=" + satInfos +
                 '}';
     }
+
+    @Override
+    public String toShortString() {
+        return "UBX NAV SAT Message{" +
+                ", num of satellites=" + numOfSatellites +
+                '}';
+    }
 }

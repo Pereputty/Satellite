@@ -71,7 +71,7 @@ public class USBSerialService {
             try {
                 readThread.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.info("Serial read interrupted. Stopped?");
             }
             readThread = null;
         }
